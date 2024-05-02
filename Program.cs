@@ -22,7 +22,7 @@ namespace CMP1903_A2_2324
             Statistics tmPlayer2Statistics = new Statistics();
             Testing testing = new Testing();
 
-            //Run continuously until program is exited
+            //Run continuously until program is exited, allows the user to choose from a menu with an input on what they want to do, i.e play SevensOut or Run Tests
             while (true)
             {
                 Console.WriteLine("---------------------------");
@@ -96,7 +96,7 @@ namespace CMP1903_A2_2324
                                 Console.WriteLine("Player 2 Statistics:");
                                 tmPlayer2Statistics.DisplayStatistics();
                                 break;
-
+                            //exits the stats menu
                             case "3":
                                 Console.Clear();
                                 break;

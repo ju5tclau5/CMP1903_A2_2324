@@ -1,10 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reflection.Metadata.Ecma335;
+
 
 namespace CMP1903_A2_2324
 {
@@ -16,13 +18,32 @@ namespace CMP1903_A2_2324
 
         //Methods
 
+        public void DebugMessage(string message)
+        {
+            string filePath = @"\Log";
+            using (StreamWriter writer = new StreamWriter(filePath, true))
+            {
+                writer.WriteLine("At time: "+DateTime.Now+" Error Received: "+ message);
+            }
+        }
+
         //tests the individual die rolls, if they are within the range of 1-6
         public void TestDieRoll()
         {
             Die die = new Die();
             _dieRoll = die.Roll();
-
-            Debug.Assert(_dieRoll >= 1 && _dieRoll <= 6, "Invalid die roll, out of range");
+            try
+            {
+                if (!(_dieRoll >= 1 && _dieRoll <= 6))
+                {
+                    throw new Exception("Invalid die roll, out of range");
+                }
+            }
+            catch (Exception ex)
+            {
+                DebugMessage(ex.Message);
+                Debug.Assert(_dieRoll >= 1 && _dieRoll <= 6, "Invalid die roll, out of range");
+            }
         }
 
         //tests the sevensout diceTotal method, should be within 2 - 12 (as its 2 die being rolled)
@@ -30,8 +51,18 @@ namespace CMP1903_A2_2324
         {
             SevensOut sevensOut = new SevensOut();
             _diceSum = sevensOut.DiceTotal();
-
-            Debug.Assert(_diceSum >= 2 && _diceSum <= 12, "Invalid dice sum, out of range");
+            try
+            {
+                if (!(_diceSum >= 2 && _diceSum <= 12))
+                {
+                    throw new Exception("Invalid dice sum of SevensOut class, out of range");
+                }
+            }
+            catch (Exception ex)
+            {
+                DebugMessage(ex.Message);
+                Debug.Assert(_diceSum >= 2 && _dieRoll <= 12, "Invalid die sum of SevensOut class, out of range");
+            }
         }
 
         //tests the threeormore diceTotal method, returned values should either be 0,3,6 or 12. no other value should be accepted
@@ -39,8 +70,18 @@ namespace CMP1903_A2_2324
         {
             ThreeOrMore threeOrMore = new ThreeOrMore();
             _diceSum = threeOrMore.DiceTotal();
-
-            Debug.Assert(_diceSum == 0 || _diceSum == 3 || _diceSum == 6 || _diceSum == 12, "Invalid dice sum, out of range");
+            try
+            {
+                if (!(_diceSum == 0 || _diceSum == 3 || _diceSum == 6 || _diceSum == 12))
+                {
+                    throw new Exception("Invalid dice sum of ThreeorMore class, out of range");
+                }
+            }
+            catch (Exception ex)
+            {
+                DebugMessage(ex.Message);
+                Debug.Assert(_diceSum == 0 || _diceSum == 3 || _diceSum == 6 || _diceSum == 12, "Invalid die sum of SevensOut class, out of range");
+            }
         }
     }
 }
