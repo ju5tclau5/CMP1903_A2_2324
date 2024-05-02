@@ -12,6 +12,8 @@ namespace CMP1903_A2_2324
     {
         static void Main(string[] args)
         {
+
+            //Create all objects that will be used
             SevensOut sevensOut = new SevensOut();
             ThreeOrMore threeOrMore = new ThreeOrMore();
             Statistics svPlayer1Statistics = new Statistics();
@@ -20,6 +22,7 @@ namespace CMP1903_A2_2324
             Statistics tmPlayer2Statistics = new Statistics();
             Testing testing = new Testing();
 
+            //Run continuously until program is exited
             while (true)
             {
                 Console.WriteLine("---------------------------");
@@ -35,6 +38,7 @@ namespace CMP1903_A2_2324
 
                 switch (userChoice)
                 {
+                    //Sevens out game, stats are updated at the end
                     case "1":
                         Console.Clear();
                         sevensOut.StartGame();
@@ -49,6 +53,7 @@ namespace CMP1903_A2_2324
                         svPlayer1Statistics.UpdatePlayCounter();
                         svPlayer2Statistics.UpdatePlayCounter();
                         break;
+                    //Three or More game, stats are updated at the end
                     case "2":
                         Console.Clear();
                         threeOrMore.StartGame();
@@ -65,6 +70,7 @@ namespace CMP1903_A2_2324
                         tmPlayer1Statistics.UpdatePlayCounter();
                         tmPlayer2Statistics.UpdatePlayCounter();
                         break;
+                    //Check stats, choose either SevensOut or ThreeorMore
                     case "3":
                         Console.Clear();
                         Console.WriteLine("1. Sevens Out Stats");
@@ -94,12 +100,13 @@ namespace CMP1903_A2_2324
                             case "3":
                                 Console.Clear();
                                 break;
-                            
+                            //exception handling
                             default:
                                 Console.WriteLine("Invalid selection, returning to the main menu.");
                                 break;
                         }
                         break;
+                    //Runs multiple tests, for more redunancy
                     case "4":
                         Console.Clear();
                         Console.WriteLine("Running tests...");
@@ -117,8 +124,10 @@ namespace CMP1903_A2_2324
                         Console.ReadLine();
                         Console.Clear();
                         break;
+                    //exits the application
                     case "5":
                         return;
+                    //exception handling
                     default:
                         Console.Clear();
                         Console.WriteLine("Invalid selection, please try again.");

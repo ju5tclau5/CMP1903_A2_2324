@@ -10,10 +10,13 @@ namespace CMP1903_A2_2324
 {
     internal class Testing
     {
-
+        //Properties
         private int _dieRoll;
         private int _diceSum;
 
+        //Methods
+
+        //tests the individual die rolls, if they are within the range of 1-6
         public void TestDieRoll()
         {
             Die die = new Die();
@@ -22,6 +25,7 @@ namespace CMP1903_A2_2324
             Debug.Assert(_dieRoll >= 1 && _dieRoll <= 6, "Invalid die roll, out of range");
         }
 
+        //tests the sevensout diceTotal method, should be within 2 - 12 (as its 2 die being rolled)
         public void TestSevensOut()
         {
             SevensOut sevensOut = new SevensOut();
@@ -30,6 +34,7 @@ namespace CMP1903_A2_2324
             Debug.Assert(_diceSum >= 2 && _diceSum <= 12, "Invalid dice sum, out of range");
         }
 
+        //tests the threeormore diceTotal method, returned values should either be 0,3,6 or 12. no other value should be accepted
         public void TestThreeOrMore()
         {
             ThreeOrMore threeOrMore = new ThreeOrMore();
