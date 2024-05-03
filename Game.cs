@@ -31,9 +31,11 @@ namespace CMP1903_A2_2324
     internal class SevensOut : IGame
     {
         //Properties
+        //values to be used in DiceTotal() class
         private int _dievalue1;
         private int _dievalue2;
         private int _dieTotal;
+        //values to represent the players statistics
         private int _player1Score;
         private int _player2Score;
         private int _player1Wins;
@@ -62,6 +64,7 @@ namespace CMP1903_A2_2324
         //Runs through the game once, according to the rules
         public void StartGame()
         {
+            //resets all values to 0 when game starts
             _player1Score = 0;
             _player2Score = 0;
             _player1Wins = 0;
@@ -80,7 +83,7 @@ namespace CMP1903_A2_2324
                     _player1Wins++;
                     break; //exit condition
                 }
-                else if (_dievalue1 == _dievalue2)
+                else if (_dievalue1 == _dievalue2) //if player rolls a double, doubles the normal score
                 {
                     _dieTotal = _dieTotal * 2;
                     _player1Score += _dieTotal;
@@ -106,7 +109,7 @@ namespace CMP1903_A2_2324
                     _player2Wins++;
                     break; //exit condition
                 }
-                else if (_dievalue1 == _dievalue2)
+                else if (_dievalue1 == _dievalue2) //if player rolls a double, doubles the normal score
                 {
                     _dieTotal = _dieTotal * 2;
                     _player2Score += _dieTotal;
@@ -164,16 +167,26 @@ namespace CMP1903_A2_2324
     {
 
         //Properties
-
+        //values to be used in the DiceTotal() class
         private int[] _dieValues = new int[5];
         private int _dieTotal;
+        bool pairChecked = false;
+        //values to be used to represent player statistics
         private int _player1Score;
         private int _player2Score;
         private int _player1Wins;
         private int _player2Wins;
-        bool pairChecked = false;
+        
 
         //Methods
+
+        //Creates a die object and assigns a random die value to _dieValue, returns it. Only used when rerolling a pair in the DiceTotal() class
+        public int RollDie()
+        {
+            Die die = new Die();
+            int _dieValue = die.Roll();
+            return _dieValue;
+        }
 
         //Creates a die object and assigns 5 random die values to an array called _dieValues
         public void RollDice()
@@ -185,16 +198,18 @@ namespace CMP1903_A2_2324
             }
         }
 
-        //Calls the previous method, uses Linq GroupBy to group numbers in the array that are the same, returns a value depending on how large those groups are,
-        //i.e - 3 of the same == 3, 4 of the same == 6 and 5 of the same == 12 
+        //Calls the previous method to create an array of dice values, groups the numbers together based on if they are the same value, returns a value depending on how large those groups are,
+        //i.e - 3 of the same == 3, 4 of the same == 6 and 5 of the same == 12
         public int DiceTotal()
         {
             RollDice();
 
+            //LINQ to group die values together, assigns it to groups
             var groups = _dieValues.GroupBy(x => x);
             
             _dieTotal = 0;
 
+            //checks the group of die values bundled by groups
             foreach (var group in groups)
             {
                 int dieCount = group.Count();
@@ -204,7 +219,7 @@ namespace CMP1903_A2_2324
                     _dieTotal = 3;
                     return _dieTotal;
                 }
-                else if (dieCount == 4) 
+                else if (dieCount == 4)
                 {
                     Console.WriteLine("Rolled a quadruple, you scored 6 points!");
                     _dieTotal = 6;
@@ -217,21 +232,82 @@ namespace CMP1903_A2_2324
                     return _dieTotal;
                 }
 
-                else if (dieCount == 2 && !pairChecked) 
+                //if the only group found is a pair, asks the user if they want to reroll
+                else if (dieCount == 2 && !pairChecked)
                 {
-                    Console.WriteLine("Rolled a pair, rerolling...");
-                    RollDice();
-                    pairChecked = true;
-                    return DiceTotal();
+                    Console.WriteLine("You rolled: " + string.Join(",", _dieValues) + " would you like to keep the pair? Type 'y' for to keep the pair, 'n' to reroll all the dice");
+                    string userChoice = Console.ReadLine();
+                    switch (userChoice)
+                    {
+                        //user chooses to keep the pair when rerolling
+                        case "y":
 
+                            //makes a new array of just the pair values
+                            _dieValues = _dieValues.Where(x => x == group.Key).ToArray();
+
+                            //resizes the array back to 5
+                            Array.Resize(ref _dieValues, _dieValues.Length + 3);
+
+                            //fills the array with random die values
+                            for (int i = 0; i < 3; i++)
+                            {
+                                int newDieValue = RollDie();
+                                _dieValues[i + 2] = newDieValue;
+                            }
+
+                            //same operation as above, just with the rerolled die values
+                            var newGroups = _dieValues.GroupBy(x => x);
+
+                            foreach (var newGroup in newGroups)
+                            {
+                                int newDieCount = newGroup.Count();
+                                if (newDieCount == 3)
+                                {
+                                    Console.WriteLine("Rolled a triple, you scored 3 points!");
+                                    _dieTotal = 3;
+                                    return _dieTotal;
+                                }
+                                else if (newDieCount == 4)
+                                {
+                                    Console.WriteLine("Rolled a quadruple, you scored 6 points!");
+                                    _dieTotal = 6;
+                                    return _dieTotal;
+                                }
+                                else if (newDieCount == 5)
+                                {
+                                    Console.WriteLine("Rolled a quintuple, you scored 12 points!");
+                                    _dieTotal = 12;
+                                    return _dieTotal;
+                                }
+                                else if (newDieCount == 2)
+                                {
+                                    Console.WriteLine("Rolled a pair again, you scored 0 points!");
+                                    return _dieTotal;
+                                }
+                            }
+                            break;
+
+                        //user chooses to reroll all the die
+                        case "n":
+                            pairChecked = true;
+                            return DiceTotal();
+
+                        //if the user does not write 'y' or 'n', defaults to no
+                        default:
+                            Console.WriteLine("Unrecognised input, defaulting to 'n'");
+                            pairChecked = true;
+                            return DiceTotal();
+                    }
                 }
             }
+            //player rolled all different die values, so returns _dieTotal which should be 0. 
             return _dieTotal;
         }
 
         //Runs the game through once, according the rules
         public void StartGame()
         {
+            //resets all values to 0 when game starts
             _player1Score = 0;
             _player2Score = 0;
             _player1Wins = 0;

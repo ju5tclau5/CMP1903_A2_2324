@@ -18,9 +18,11 @@ namespace CMP1903_A2_2324
 
         //Methods
 
+        //method to write a message to a log file if there is an error
         public void DebugMessage(string message)
         {
-            string filePath = @"\Log";
+            //creates a logfile if one does not exist, otherwise it appends to it
+            string filePath = @"\DebugLog";
             using (StreamWriter writer = new StreamWriter(filePath, true))
             {
                 writer.WriteLine("At time: "+DateTime.Now+" Error Received: "+ message);
@@ -61,7 +63,7 @@ namespace CMP1903_A2_2324
             catch (Exception ex)
             {
                 DebugMessage(ex.Message);
-                Debug.Assert(_diceSum >= 2 && _dieRoll <= 12, "Invalid die sum of SevensOut class, out of range");
+                Debug.Assert(_diceSum >= 2 && _diceSum <= 12, "Invalid die sum of SevensOut class, out of range");
             }
         }
 

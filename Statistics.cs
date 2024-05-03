@@ -11,7 +11,6 @@ namespace CMP1903_A2_2324
     {
 
         //Properties
-
         private int _highScore = 0; 
         private int _playerwins = 0;
         private int _counter = 0;
@@ -44,6 +43,15 @@ namespace CMP1903_A2_2324
         public void UpdatePlayCounter() 
         {
             _counter++;
+        }
+
+        //runs all of the previous methods, mainly for the program class to look more tidy
+        public void UpdateAll(int score, int wins)
+        {
+            UpdateHighScore(score);
+            UpdateMeanScore(score);
+            UpdatePlayerwins(wins);
+            UpdatePlayCounter();
         }
 
         //displays all the statistics, as well as calculating the average of the score (if there are scores to be calculated)

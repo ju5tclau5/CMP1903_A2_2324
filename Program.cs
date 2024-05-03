@@ -16,6 +16,7 @@ namespace CMP1903_A2_2324
             //Create all objects that will be used
             SevensOut sevensOut = new SevensOut();
             ThreeOrMore threeOrMore = new ThreeOrMore();
+            //seperate score stats for the different games and players (sv = SevensOut, tm = ThreeorMore)
             Statistics svPlayer1Statistics = new Statistics();
             Statistics tmPlayer1Statistics = new Statistics();
             Statistics svPlayer2Statistics = new Statistics();
@@ -33,7 +34,6 @@ namespace CMP1903_A2_2324
                 Console.WriteLine("5. Exit");
                 Console.WriteLine("---------------------------");
 
-
                 string userChoice = Console.ReadLine();
 
                 switch (userChoice)
@@ -46,12 +46,8 @@ namespace CMP1903_A2_2324
                         int player2Score = sevensOut.GetScore(2);
                         int player1Wins = sevensOut.GetWins(1);
                         int player2Wins = sevensOut.GetWins(2);
-                        svPlayer1Statistics.UpdateHighScore(player1Score);
-                        svPlayer2Statistics.UpdateHighScore(player2Score);
-                        svPlayer1Statistics.UpdatePlayerwins(player1Wins);
-                        svPlayer2Statistics.UpdatePlayerwins(player2Wins);
-                        svPlayer1Statistics.UpdatePlayCounter();
-                        svPlayer2Statistics.UpdatePlayCounter();
+                        svPlayer1Statistics.UpdateAll(player1Score, player1Wins);
+                        svPlayer2Statistics.UpdateAll(player2Score, player2Wins);
                         break;
                     //Three or More game, stats are updated at the end
                     case "2":
@@ -61,14 +57,8 @@ namespace CMP1903_A2_2324
                         player2Score = threeOrMore.GetScore(2);
                         player1Wins = threeOrMore.GetWins(1);
                         player2Wins = threeOrMore.GetWins(2);
-                        tmPlayer1Statistics.UpdateHighScore(player1Score);
-                        tmPlayer2Statistics.UpdateHighScore(player2Score);
-                        tmPlayer1Statistics.UpdateMeanScore(player1Score);
-                        tmPlayer2Statistics.UpdateMeanScore(player2Score);
-                        tmPlayer1Statistics.UpdatePlayerwins(player1Wins);
-                        tmPlayer2Statistics.UpdatePlayerwins(player2Wins);
-                        tmPlayer1Statistics.UpdatePlayCounter();
-                        tmPlayer2Statistics.UpdatePlayCounter();
+                        tmPlayer1Statistics.UpdateAll(player1Score, player1Wins);
+                        tmPlayer2Statistics.UpdateAll(player2Score, player2Wins);
                         break;
                     //Check stats, choose either SevensOut or ThreeorMore
                     case "3":
